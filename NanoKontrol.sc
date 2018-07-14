@@ -17,6 +17,7 @@ NanoKontrol {
 
     initNanoKontrol{
 
+        /* MIDIIn.connect(1, MIDIClient.destinations.at(3)); */
         MIDIIn.connectAll;
 
         fadergroup= IdentityDictionary[
@@ -132,7 +133,8 @@ NKController {
     }
 
     onChanged_{|action|
-        responder= MIDIdef.cc(key, {|val| action.value(val) }, num);
+        var mc = MIDIClient.sources.select({|item, i| item.device == "nanoKONTROL" }).at(0);
+        responder= MIDIdef.cc(key, {|val| action.value(val) }, num, srcID: mc.uid);
     }
 
     free{

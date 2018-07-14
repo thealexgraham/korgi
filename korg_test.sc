@@ -1,4 +1,3 @@
-
 (
 
     fadergroup= IdentityDictionary[
@@ -13,35 +12,61 @@
         \fader9 -> NKController(\fader9, 13)
         ];
 )
-"asjdka"+\test.asSymbol+"hiii".postln;
+
 (
-    n = NanoKontrol.new
-    var page
-    page = "1"
-    t = TouchOSC.new(port)
-
-    n.controllers.keyValuesDo(|key, controller|
-        if (controller.isKindOf(NKButton)
-                              ,{t.addbutton("/"+page+"/"+key, controller);}
-                              ,{t.controller("/"+page+"/"+key, controller);}
-        )
-    };
-(
-
-    n.fader1.onChanged = {|val|
-        "fader 1 changed" ++ val.postln;
-        val.postln
-    };
-
-    n.topBt1.onPress   = {|val| "top button 1 pressed".postln; val.postln };
-
-    n.topBt1.onRelease = {|val| "top button 1 released".postln; val.postln };
-
-    n.knob1.onChanged  = {|val| "knob 1 changed".postln; val.postln };
+    ~ip = "192.168.1.4";
+    /* ~ip = "172.20.10.5"; */
+    ~portOut = 9000;
+    ~portIn  = 8000;
+    t = NanoTouch(~ip, 9000, 8000, "IAC Driver", "korgi");
+/* c   t = NanoTouch(~ip, ~portOut); */
 )
+Quarks.gui
 (
-    n.faders.do{|fader, i|
-        fader.onChanged = {|val| ("Fader"+(i+1)).postln; val.postln };
-
-    };
+    g = NanoGUI.new;
+    TabbedView
 )
+
+(
+    /* n = NanoKontrol.new */
+    /* var page */
+    /* page = "1" */
+    m = MIDIClient.init;
+    MIDIClient.sources;
+
+    m.postln;
+    MIDIEndPoint("nanoKONTROL", "SLIDER/KNOB").class;
+    /* MIDIClient.sources.postln; */
+    a.MIDIClient.sources.select({|item, i| item.device == "nanoKONTROL" }).at(0).postln
+    a = MIDIClient.sources;
+    c = MIDIClient.sources.at(3);
+    uid.postln;
+    t = NanoTouch(~ip, 9000, "IAC Driver", "korgi");
+    n = NetAddr("172.20.10.5", 9000);
+    n.postln;
+    n.sendMsg("/1/fader1",0.5);
+ /*     n.controllers.keyValuesDo(|key, controller| */
+/*         if (controller.isKindOf(NKButton) */
+/*                               ,{t.addbutton("/"+page+"/"+key, controller);} */
+/*                               ,{t.controller("/"+page+"/"+key, controller);} */
+/*         ) */
+/*     }; */
+/* ( */
+/*  */
+/*     n.fader1.onChanged = {|val| */
+/*         "fader 1 changed" ++ val.postln; */
+/*         val.postln */
+/*     }; */
+/*  */
+/*     n.topBt1.onPress   = {|val| "top button 1 pressed".postln; val.postln }; */
+/*  */
+/*     n.topBt1.onRelease = {|val| "top button 1 released".postln; val.postln }; */
+/*  */
+/*     n.knob1.onChanged  = {|val| "knob 1 changed".postln; val.postln }; */
+/* ) */
+/* ( */
+/*     n.faders.do{|fader, i| */
+/*         fader.onChanged = {|val| ("Fader"+(i+1)).postln; val.postln }; */
+/*  */
+/*     }; */
+)w
