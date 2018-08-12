@@ -1,3 +1,4 @@
+s = Server.start;
 (
 
     fadergroup= IdentityDictionary[
@@ -14,8 +15,8 @@
 )
 
 (
-    ~ip = "192.168.1.4";
-    /* ~ip = "172.20.10.5"; */
+    /* ~ip = "192.168.1.3"; */
+    ~ip = "172.20.10.6";
     ~portOut = 9000;
     ~portIn  = 8000;
     t = NanoTouch(~ip, 9000, 8000, "IAC Driver", "korgi");
@@ -34,6 +35,8 @@ Quarks.gui
     m = MIDIClient.init;
     MIDIClient.sources;
 
+    m = MIDIOut.newByName("IAC Driver", "korgi");
+
     m.postln;
     MIDIEndPoint("nanoKONTROL", "SLIDER/KNOB").class;
     /* MIDIClient.sources.postln; */
@@ -42,9 +45,13 @@ Quarks.gui
     c = MIDIClient.sources.at(3);
     uid.postln;
     t = NanoTouch(~ip, 9000, "IAC Driver", "korgi");
-    n = NetAddr("172.20.10.5", 9000);
+    /* n = NetAddr("172.20.10.5", 9000); */
+    n = NetAddr("192.168.1.3", 9000);
     n.postln;
     n.sendMsg("/1/fader1",0.5);
+    ControlRate.ir.postln;
+
+    { ControlRate.ir.poll }.play;
  /*     n.controllers.keyValuesDo(|key, controller| */
 /*         if (controller.isKindOf(NKButton) */
 /*                               ,{t.addbutton("/"+page+"/"+key, controller);} */

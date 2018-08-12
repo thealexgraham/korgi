@@ -29,18 +29,19 @@ NanoTouch {
     nanoTouchInit{ |addr, outPort, inPort, midiDeviceName, midiPortName|
         MIDIClient.init;
         mid = MIDIOut.newByName(midiDeviceName, midiPortName);
+        mid.latency = 0;
         net = NetAddr(addr, outPort);
 
         nc = NanoKontrol.new;
         page = 1;
 
-        /* btns = IdentityDictionary.new; */
+        btns = IdentityDictionary.new;
 
         nc.controllers.keysValuesDo{|key, controller|
             var osc, oscTrue;
             osc = "/"++page++"/"++key.asString;
             oscTrue = "/"++page++"/"++key.asString++"/true";
-            osc.postln;
+            /* osc.postln; */
 
             if (controller.isKindOf(NKButton),
                {
@@ -69,28 +70,28 @@ NanoTouch {
         control.onChanged = { |val|
             var zval;
             zval = this.midiToZero(val);
-            zval.postln;
+            /* zval.postln; */
             net.sendMsg(address, zval);
             net.sendMsg(this.toReal(address), zval);
-            /* mid.control(16, control.num, zval); */
+            mid.control(16, control.num, val);
 
         }
     }
 
     addButton{|address, button|
-        /* var btn = NTButton.new(false); */
+        var btn = NTButton.new(false);
         /* address.postln; */
-        /* btns.put(address, btn); */
-        /*  */
-        /* button.onPress = { |val| */
-        /*     btn.pressed; */
-        /*     btn.getState.postln; */
-        /*     net.sendMsg(address, btn.getState) */
-        /* }; */
-        /*  */
-        /* button.onRelease = { |val| */
-        /*     /* net.sendMsg(address, val) */ */
-        /* }; */
+        btns.put(address, btn);
+
+        button.onPress = { |val|
+            btn.pressed;
+            /* btn.getState.postln; */
+            net.sendMsg(address, btn.getState)
+        };
+
+        button.onRelease = { |val|
+            /* net.sendMsg(address, val) */
+        };
     }
 
     toReal{|address| ^address++"/real";}
